@@ -22,10 +22,10 @@ public class User {
     private String name;
     private String email;
     @DBRef
-    private List<Product> products;
+    private List<Coche> coches;
 
-    public void addProduct(Product product){
-        products.add(product);
+    public void addProduct(Coche coche){
+        coches.add(coche);
     }
 
 }

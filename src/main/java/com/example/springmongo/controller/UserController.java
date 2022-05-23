@@ -1,6 +1,6 @@
 package com.example.springmongo.controller;
 
-import com.example.springmongo.model.Product;
+import com.example.springmongo.model.Coche;
 import com.example.springmongo.model.User;
 import com.example.springmongo.repositories.UserDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,11 +16,11 @@ import java.util.*;
 @Controller
 public class UserController {
     UserDao userDao;
-    ProductController productController;
+    CocheController cocheController;
     @Autowired
-    public UserController(UserDao userDao, ProductController productController) {
+    public UserController(UserDao userDao, CocheController cocheController) {
         this.userDao = userDao;
-        this.productController = productController;
+        this.cocheController = cocheController;
     }
 
     public List<User> getAllUsers() {
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     public void addUser(User user) {
-        List<Product> products = user.getProducts();
-        productController.addAllProducts(products);
+        List<Coche> coches = user.getCoches();
+        cocheController.addAllCoches(coches);
         userDao.save(user);
     }
 
@@ -48,17 +48,17 @@ public class UserController {
         user1.setEmail(user.getEmail());
         user1.setName(user.getName());
 
-        List<Product> products = user.getProducts();
-        for (Product p: user1.getProducts()){
-            for (Product pp: products){
-                if (p.getId() == pp.getId()){
-                    p.setName(pp.getName());
-                    p.setPrecio(pp.getPrecio());
-                    p.setQuantity(pp.getQuantity());
+        List<Coche> coches = user.getCoches();
+        for (Coche c: user1.getCoches()){
+            for (Coche cc: coches){
+                if (c.getId() == cc.getId()){
+                    c.setName(cc.getName());
+                    c.setPrecio(cc.getPrecio());
+                    c.setQuantity(cc.getQuantity());
                 }
             }
         }
-        productController.actualizarTodo(user.getProducts());
+        cocheController.actualizarTodo(user.getCoches());
 
         userDao.save(user1);
     }
@@ -67,10 +67,10 @@ public class UserController {
         User user = getUser(id);
         User userPatched = applyPatch(patch, user);
 
-        if (user.getProducts().size() == userPatched.getProducts().size()){
-            productController.actualizarTodo(userPatched.getProducts());
-        }else if (user.getProducts().size() < userPatched.getProducts().size()){
-            productController.addAllProducts(userPatched.getProducts());
+        if (user.getCoches().size() == userPatched.getCoches().size()){
+            cocheController.actualizarTodo(userPatched.getCoches());
+        }else if (user.getCoches().size() < userPatched.getCoches().size()){
+            cocheController.addAllCoches(userPatched.getCoches());
         }
 
         userDao.save(userPatched);
@@ -84,26 +84,26 @@ public class UserController {
         return objectMapper.treeToValue(patched, User.class);
     }
 
-    public void addProduct(Product product, int id) {
+    public void addCoche(Coche coche, int id) {
         User u = getUser(id);
-        productController.añadir(product);
-        Product p = productController.getProduct(product.getId());
+        cocheController.añadir(coche);
+        Coche c = cocheController.getCoche(coche.getId());
         boolean find = false;
-        for (Product pp : u.getProducts()){
-            if (pp.getId() == p.getId()) {
+        for (Coche cc : u.getCoches()){
+            if (cc.getId() == c.getId()) {
                 find = true;
                 break;
             }
         }
         if (!find){
-            u.addProduct(p);
+            u.addProduct(c);
         }
         userDao.save(u);
     }
 
     public void deleteProductOnUser(int id, int index) {
         User u = getUser(id);
-        u.getProducts().remove(index);
+        u.getCoches().remove(index);
         userDao.save(u);
     }
 
@@ -111,12 +111,12 @@ public class UserController {
     /*
     {
         "op":"replace",
-        "path":"/products/0/name",
+        "path":"/coches/0/name",
         "value":"sdfasda"
     }
     {
          "op":"add",
-        "path":"/products/0",
+        "path":"/coches/0",
         "value": {"id":10}
     }
     {
@@ -125,13 +125,13 @@ public class UserController {
     }
     {
         "op":"move",
-        "from":"/products/0",
-        "path":"/products/4"
+        "from":"/coches/0",
+        "path":"/coches/4"
     }
     {
         "op":"copy",
-        "from":"/products/0",
-        "path":"/products/2"
+        "from":"/coches/0",
+        "path":"/coches/2"
     }
     {
         "op":"test",
