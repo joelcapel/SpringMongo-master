@@ -1,5 +1,6 @@
 package com.example.springmongo.resources;
 
+import com.example.springmongo.controller.CocheController;
 import com.example.springmongo.model.Coche;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -10,25 +11,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(CocheResource.Product_RESOURCE)
+@RequestMapping(CocheResource.Coche_RESOURCE)
 public class CocheResource {
-    public final static String Product_RESOURCE = "/coches";
+    public final static String Coche_RESOURCE = "/coches";
 
-    CocheResource cocheResource;
+    CocheController cocheController;
 
     @Autowired
     public CocheResource(CocheResource cocheResource) {
-        this.cocheResource = cocheResource;
+        this.cocheController = cocheController;
     }
 
     @GetMapping
     public List<Coche> coches(){
-        return cocheResource.getAllCoches();
+        return cocheController.getAllCoches();
     }
 
     @GetMapping("{id}")
     public Coche coche(@PathVariable("id") int id){
-        return cocheController.getProduct(id);
+        return cocheController.getCoche(id);
     }
 
     @PostMapping
@@ -42,12 +43,12 @@ public class CocheResource {
     }
 
     @PutMapping("{id}")
-    public void putProduct(@PathVariable("id") int id, @RequestBody Coche coche){
-        cocheController.actualizar(id,product);
+    public void putCoche(@PathVariable("id") int id, @RequestBody Coche coche){
+        cocheController.actualizar(id,coche);
     }
 
     @PatchMapping("{id}")
-    public void patchProduct(@PathVariable("id") int id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
-        productController.patchProduct(id,patch);
+    public void patchCoche(@PathVariable("id") int id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        cocheController.patchCoche(id,patch);
     }
 }

@@ -96,12 +96,12 @@ public class UserController {
             }
         }
         if (!find){
-            u.addProduct(c);
+            u.addCoche(c);
         }
         userDao.save(u);
     }
 
-    public void deleteProductOnUser(int id, int index) {
+    public void deleteCocheOnUser(int id, int index) {
         User u = getUser(id);
         u.getCoches().remove(index);
         userDao.save(u);

@@ -24,7 +24,7 @@ public class User {
     @DBRef
     private List<Coche> coches;
 
-    public void addProduct(Coche coche){
+    public void addCoche(Coche coche){
         coches.add(coche);
     }
 

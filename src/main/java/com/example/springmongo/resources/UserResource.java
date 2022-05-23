@@ -1,7 +1,7 @@
 package com.example.springmongo.resources;
 
 import com.example.springmongo.controller.UserController;
-import com.example.springmongo.model.Product;
+import com.example.springmongo.model.Coche;
 import com.example.springmongo.model.User;
 import com.example.springmongo.service.SequenceGeneratorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,8 +50,8 @@ public class UserResource {
     }
 
     @PostMapping("{id}")
-    public void addProductOnUser(@RequestBody Product product, @PathVariable("id") int id){
-        userController.addProduct(product,id);
+    public void addCocheOnUser(@RequestBody Coche coche, @PathVariable("id") int id){
+        userController.addCoche(coche,id);
     }
 
     @DeleteMapping("{id}")
@@ -59,9 +59,9 @@ public class UserResource {
         userController.deleteUser(id);
     }
 
-    @DeleteMapping("{id}/products/{index}")
+    @DeleteMapping("{id}/coches/{index}")
     public void delete(@PathVariable("id") int id, @PathVariable("index") int index){
-        userController.deleteProductOnUser(id,index-1);
+        userController.deleteCocheOnUser(id,index-1);
     }
 
     @PutMapping("{id}")
